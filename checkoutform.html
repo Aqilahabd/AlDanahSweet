@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout Form</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+
+    #checkout {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card {
+      width: 50px;
+      height: 30px;
+      margin-bottom: 15px;
+      background-color: #ccc;
+      border: none;
+      cursor: pointer;
+    }
+
+    label {
+      margin: 10px 0 5px;
+    }
+
+    input[type="text"], select {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    #left {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #left select {
+      flex: 1;
+    }
+
+    #left p {
+      margin: 0;
+    }
+
+    #cvc {
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 10px;
+      background-color: #D2691E;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #cart-items {
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 8px 0;
+    }
+
+    .total {
+      font-weight: bold;
+      text-align: right;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="wrapper">
+  <div id="container">
+    <div id="payment">
+
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+
+      <form id="checkout">
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="img/MasterCard.png" alt="MasterCard" class="rounded-md" style="width: 70px; height: 70px;">
+          <img src="img/visa.png" alt="Visa" class="rounded-md" style="width: 70px; height: 70px;">
+        </div>
+
+        <label>Credit Card Number</label>
+        <input id="cardnumber" type="text" pattern="[0-9]{13,16}" name="cardnumber" required placeholder="0000-0000-0000-0000">
+
+        <label>Card Holder</label>
+        <input id="cardholder" type="text" name="name" required maxlength="50">
+
+        <label>Expiration Date</label>
+        <label id="cvc-label">CVC/CVV</label>
+
+        <div id="left">
+          <select name="month" id="month" size="1">
+            <option value="00">MM</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+          <p>/</p>
+          <select name="year" id="year" size="1">
+            <option value="00">YY</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+          </select>
+        </div>
+
+        <input id="cvc" type="text" maxlength="3" placeholder="CVC/CVV" />
+
+        <input class="btn" type="button" name="Buy" value="Buy">
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Get cart items from localStorage
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  const cartItemsContainer = document.getElementById('cart-items');
+
+  if (cartItems.length === 0) {
+    cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+  } else {
+    let total = 0;
+    cartItems.forEach(item => {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+      itemDiv.innerHTML = `<strong>${item.name}</strong> - $${item.price}`;
+      cartItemsContainer.appendChild(itemDiv);
+      total += parseFloat(item.price);
+    });
+
+    const totalDiv = document.createElement('div');
+    totalDiv.className = 'total';
+    totalDiv.innerHTML = `Total: $${total.toFixed(2)}`;
+    cartItemsContainer.appendChild(totalDiv);
+  }
+</script>
+
+</body>
+</html>
